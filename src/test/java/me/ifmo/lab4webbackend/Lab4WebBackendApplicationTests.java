@@ -1,0 +1,13 @@
+package me.ifmo.lab4webbackend;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+
+@SpringBootTest
+class Lab4WebBackendApplicationTests {
+
+	@Test
+	void contextLoads() {
+	}
+
+}

@@ -24,12 +24,9 @@ public class AuthTokenFilter extends OncePerRequestFilter {
     @Autowired
     private UserService userService;
 
-    private String parseJwt(HttpServletRequest request) {
-        String headerAuth = request.getHeader("Authorization");
-        if (StringUtils.hasText(headerAuth) && headerAuth.startsWith("Bearer ")) {
-            return headerAuth.substring(7);
-        }
-        return null;
+    private String extractToken(HttpServletRequest request) {
+        String authHeader = request.getHeader("Authorization");
+        return (StringUtils.hasText(authHeader) && authHeader.startsWith("Bearer ")) ? authHeader.substring(7) : null;
     }
     
     @Override

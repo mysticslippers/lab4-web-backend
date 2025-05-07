@@ -23,6 +23,10 @@ public class UserService {
     }
 
     public UserDetails loadUserByUsername(String username) {
-        return userRepository.findByUsername(username);
+        User user = this.userRepository.findByUsername(username);
+        if (user == null) {
+            throw new UsernameNotFoundException("User not found with username: " + username);
+        }
+        return user;
     }
 }

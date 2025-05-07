@@ -9,12 +9,22 @@ public class EntriesController {
   @Autowired
     private UserService userService;
 
-    @Autowired
-    private EntryRepository entryRepository;
+  @Autowired
+  private EntryRepository entryRepository;
 
-    @GetMapping
-    ResponseEntity<?> getUserEntries(Principal principal) {
-        User user = (User) this.userService.loadUserByUsername(principal.getName());
-        return ResponseEntity.ok(this.entryRepository.findByUser(user));
-    }
+  @GetMapping
+  public ResponseEntity<?> getUserEntries(Principal principal) {
+      User user = (User) this.userService.loadUserByUsername(principal.getName());
+      return ResponseEntity.ok(this.entryRepository.findByUser(user));
+  }
+
+  @PostMapping
+  public ResponseEntity<?> addEntry(@Validated @RequestBody EntryDTO entryDTO, Principal principal) {
+      User user = (User) this.userService.loadUserByUsername(principal.getName());
+      return ResponseEntity.ok(this.entryRepository.save(new Entry(
+              entryDTO.getX(),
+              entryDTO.getY(),
+              entryDTO.getR(),
+              user)));
+  }
 }

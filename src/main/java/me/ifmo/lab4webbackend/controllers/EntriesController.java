@@ -30,13 +30,11 @@ public class EntriesController {
   }
 
   @PostMapping
-  public ResponseEntity<?> addEntry(@Validated @RequestBody EntryDTO entryDTO, Principal principal) {
-      User user = (User) this.userService.loadUserByUsername(principal.getName());
-      return ResponseEntity.ok(this.entryRepository.save(new Entry(
-              entryDTO.getX(),
-              entryDTO.getY(),
-              entryDTO.getR(),
-              user)));
+  public ResponseEntity<Entry> addEntry(@Validated @RequestBody EntryDTO entryDTO, Principal principal) {
+      User user = getCurrentUser(principal);
+      Entry entry = new Entry(entryDTO.getX(), entryDTO.getY(), entryDTO.getR(), user);
+      Entry savedEntry = this.entryRepository.save(entry);
+      return ResponseEntity.status(HttpStatus.CREATED).body(savedEntry);
   }
 
   @DeleteMapping

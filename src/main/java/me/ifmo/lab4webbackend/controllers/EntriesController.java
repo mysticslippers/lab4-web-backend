@@ -19,6 +19,10 @@ public class EntriesController {
   @Autowired
   private EntryRepository entryRepository;
 
+  private User getCurrentUser(Principal principal) {
+      return (User) this.userService.loadUserByUsername(principal.getName());
+  }
+  
   @GetMapping
   public ResponseEntity<?> getUserEntries(Principal principal) {
       User user = (User) this.userService.loadUserByUsername(principal.getName());

@@ -13,4 +13,13 @@ public class JwtManager {
 
     @Value("${jwt.token.expired}")
     private int expirationMs;
+
+    public String generateToken(String username) {
+        return Jwts.builder()
+                .setSubject(username)
+                .setIssuedAt(new Date())
+                .setExpiration(new Date((new Date()).getTime() + this.expirationMs))
+                .signWith(SignatureAlgorithm.HS512, this.secret)
+                .compact();
+    }
 }

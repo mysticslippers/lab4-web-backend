@@ -10,4 +10,8 @@ import org.springframework.stereotype.Service;
 public class UserService {
     @Autowired
     private UserRepository userRepository;
+
+    public User addUser(User user) {
+        return userRepository.save(user);
+    }
 }

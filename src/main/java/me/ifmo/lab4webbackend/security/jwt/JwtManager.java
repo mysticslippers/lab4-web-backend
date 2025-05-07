@@ -21,10 +21,13 @@ public class JwtManager {
     }
     
     public String generateToken(String username) {
+        Date now = new Date();
+        Date expiryDate = new Date(now.getTime() + this.expirationMs);
+
         return Jwts.builder()
                 .setSubject(username)
-                .setIssuedAt(new Date())
-                .setExpiration(new Date((new Date()).getTime() + this.expirationMs))
+                .setIssuedAt(now)
+                .setExpiration(expiryDate)
                 .signWith(SignatureAlgorithm.HS512, this.secret)
                 .compact();
     }

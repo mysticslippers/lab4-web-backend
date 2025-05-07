@@ -33,11 +33,7 @@ public class JwtManager {
     }
 
     public String getUsername(String token) {
-        return Jwts.parser()
-                .setSigningKey(this.secret)
-                .parseClaimsJws(token)
-                .getBody()
-                .getSubject();
+        return parseToken(token).getBody().getSubject();
     }
 
     public boolean validateToken(String token) {

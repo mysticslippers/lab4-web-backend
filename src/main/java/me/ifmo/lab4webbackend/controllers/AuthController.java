@@ -42,4 +42,20 @@ public class AuthController {
             return ResponseEntity.badRequest().body("Incorrect username or password!");
         }
     }
+
+    @PostMapping("/register")
+    public ResponseEntity<?> register(@Validated @RequestBody UserDTO userDTO) {
+        try {
+            if (this.userService.loadUserByUsername(userDTO.getUsername()) != null) {
+                throw new IllegalArgumentException();
+            }
+            this.userService.addUser(new User(
+                    userDTO.getUsername(),
+                    this.passwordEncoder.encode(userDTO.getPassword())
+            ));
+            return ResponseEntity.ok().body(userDTO.getUsername());
+        } catch (IllegalArgumentException exception) {
+            return ResponseEntity.badRequest().body("The username '" + userDTO.getUsername() + "' is already in use!");
+        }
+    }
 }

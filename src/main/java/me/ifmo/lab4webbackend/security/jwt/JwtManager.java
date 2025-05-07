@@ -1,3 +1,5 @@
+package me.ifmo.lab4webbackend.security.jwt;
+
 import io.jsonwebtoken.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,6 +16,10 @@ public class JwtManager {
     @Value("${jwt.token.expired}")
     private int expirationMs;
 
+    private Jws<Claims> parseToken(String token) {
+        return Jwts.parser().setSigningKey(this.secret).parseClaimsJws(token);
+    }
+    
     public String generateToken(String username) {
         return Jwts.builder()
                 .setSubject(username)

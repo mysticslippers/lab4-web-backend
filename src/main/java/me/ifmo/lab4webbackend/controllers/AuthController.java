@@ -39,18 +39,16 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@Validated @RequestBody UserDTO userDTO) {
-        try {
-            if (this.userService.loadUserByUsername(userDTO.getUsername()) != null) {
-                throw new IllegalArgumentException();
-            }
-            this.userService.addUser(new User(
-                    userDTO.getUsername(),
-                    this.passwordEncoder.encode(userDTO.getPassword())
-            ));
-            return ResponseEntity.ok().body(userDTO.getUsername());
-        } catch (IllegalArgumentException exception) {
-            return ResponseEntity.badRequest().body("The username '" + userDTO.getUsername() + "' is already in use!");
+    public ResponseEntity<String> register(@Validated @RequestBody UserDTO userDTO) {
+        String username = userDTO.getUsername();
+        
+        if (this.userService.loadUserByUsername(username) != null) {
+            return ResponseEntity.badRequest().body("The username '" + username + "' is already in use!");
         }
+
+        User newUser = new User(username, this.passwordEncoder.encode(userDTO.getPassword()));
+        this.userService.addUser(newUser);
+        
+        return ResponseEntity.ok().body(username);
     }
 }

@@ -14,4 +14,8 @@ public class UserService {
     public User addUser(User user) {
         return userRepository.save(user);
     }
+
+    public UserDetails loadUserByUsername(String username) {
+        return userRepository.findByUsername(username);
+    }
 }

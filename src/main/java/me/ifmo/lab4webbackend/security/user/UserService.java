@@ -17,8 +17,9 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
+    @Transactional
     public User addUser(User user) {
-        return userRepository.save(user);
+        return this.userRepository.save(user);
     }
 
     public UserDetails loadUserByUsername(String username) {

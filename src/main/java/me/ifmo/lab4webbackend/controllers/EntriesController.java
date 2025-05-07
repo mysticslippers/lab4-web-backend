@@ -1,7 +1,14 @@
 package me.ifmo.lab4webbackend.controllers;
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import me.ifmo.lab4webbackend.DTO.EntryDTO;
+import me.ifmo.lab4webbackend.entities.Entry;
+import me.ifmo.lab4webbackend.entities.User;
+import me.ifmo.lab4webbackend.repositories.EntryRepository;
+import me.ifmo.lab4webbackend.security.user.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/entries")

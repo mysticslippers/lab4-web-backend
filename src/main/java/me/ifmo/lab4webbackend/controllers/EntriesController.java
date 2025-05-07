@@ -27,4 +27,10 @@ public class EntriesController {
               entryDTO.getR(),
               user)));
   }
+
+  @DeleteMapping
+  public ResponseEntity<?> deleteUserEntries(Principal principal) {
+      User user = (User) this.userService.loadUserByUsername(principal.getName());
+      return ResponseEntity.ok(this.entryRepository.deleteByUser(user));
+  }
 }

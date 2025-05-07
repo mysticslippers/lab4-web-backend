@@ -22,4 +22,12 @@ public class JwtManager {
                 .signWith(SignatureAlgorithm.HS512, this.secret)
                 .compact();
     }
+
+    public String getUsername(String token) {
+        return Jwts.parser()
+                .setSigningKey(this.secret)
+                .parseClaimsJws(token)
+                .getBody()
+                .getSubject();
+    }
 }

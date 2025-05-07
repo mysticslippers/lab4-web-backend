@@ -30,4 +30,22 @@ public class JwtManager {
                 .getBody()
                 .getSubject();
     }
+
+    public boolean validateToken(String token) {
+        try{
+            Jwts.parser().setSigningKey(this.secret).parseClaimsJws(token);
+            return true;
+        }catch(SignatureException exception){
+            log.error("Invalid JWT signature: {}", exception.getMessage());
+        }catch(MalformedJwtException exception){
+            log.error("Invalid JWT token: {}", exception.getMessage());
+        }catch(ExpiredJwtException exception){
+            log.error("JWT token is expired: {}", exception.getMessage());
+        }catch(UnsupportedJwtException exception){
+            log.error("JWT token is unsupported: {}", exception.getMessage());
+        }catch(IllegalArgumentException exception){
+            log.error("JWT claims string is empty: {}", exception.getMessage());
+        }
+        return false;
+    }
 }

@@ -28,19 +28,14 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@Validated @RequestBody UserDTO userDTO) {
-        try {
-            User user = (User) this.userService.loadUserByUsername(userDTO.getUsername());
-            if (user == null) {
-                throw new IllegalArgumentException();
-            } else if (!this.passwordEncoder.matches(userDTO.getPassword(), user.getPassword())) {
-                throw new IllegalAccessException();
-            } else {
-                String jwt = this.jwtManager.generateToken(userDTO.getUsername());
-                return ResponseEntity.ok(new JwtDTO(userDTO.getUsername(), jwt));
-            }
-        } catch (IllegalArgumentException | IllegalAccessException exception) {
+        User user = (User) this.userService.loadUserByUsername(userDTO.getUsername());
+        
+        if (user == null || !this.passwordEncoder.matches(userDTO.getPassword(), user.getPassword())) {
             return ResponseEntity.badRequest().body("Incorrect username or password!");
         }
+
+        String jwt = this.jwtManager.generateToken(userDTO.getUsername());
+        return ResponseEntity.ok(new JwtDTO(userDTO.getUsername(), jwt));
     }
 
     @PostMapping("/register")
